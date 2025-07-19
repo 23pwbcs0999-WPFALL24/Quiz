@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainSpark </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(110, 142, 251, 0.4);
+        }
+        
+        .question-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .question-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col">
+        <!-- App Header -->
+        <header class="bg-white shadow-sm py-4">
+            <div class="container mx-auto px-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-indigo-100 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000-svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-gray-800">BrainSpark</h1>
+                </div>
+                <button id="toggle-theme" class="p-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow">
+            <!-- Role Selection Screen (Default View) -->
+            <section id="role-selection" class="py-12 px-4">
+                <div class="max-w-4xl mx-auto text-center">
+                    <div class="mb-12 fade-in-up">
+                        <h2 class="text-4xl font-bold text-gray-800 mb-4">Ignite Learning Through Engaging Quizzes</h2>
+                        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                            Challenge minds, assess knowledge, and track progress with our interactive quiz platform.
+                        </p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-8 mt-16 animate__animated animate__fadeIn">
+                        <!-- Teacher Card -->
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                            <div class="p-2 bg-indigo-50">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/490509da-ea53-450e-ad9b-2df4d8e52a51.png" alt="Professional teacher standing in front of a whiteboard with educational diagrams and equations. The teacher appears confident and the classroom has a modern, well-lit environment" class="w-full h-48 object-cover rounded-t-lg">
+                            </div>
+                            <div class="p-8">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-3">For Educators</h3>
+                                <p class="text-gray-600 mb-6">
+                                    Create engaging quizzes, track student performance, and enhance classroom interaction with our powerful tools.
+                                </p>
+                                <button onclick="selectRole('teacher')" class="btn-primary text-white font-medium py-3 px-6 rounded-full">
+                                    Continue as Educator
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Student Card -->
+                        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+                            <div class="p-2 bg-indigo-50">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8e56de38-c58f-4e8d-851b-a8ac3b57dbbe.png" alt="Diverse group of students collaborating on laptops in a modern study space with natural lighting and comfortable seating" class="w-full h-48 object-cover rounded-t-lg">
+                            </div>
+                            <div class="p-8">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-3">For Learners</h3>
+                                <p class="text-gray-600 mb-6">
+                                    Test your knowledge, compete with peers, and receive instant feedback to accelerate your learning journey.
+                                </p>
+                                <button onclick="selectRole('student')" class="btn-primary text-white font-medium py-3 px-6 rounded-full">
+                                    Continue as Learner
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Teacher Dashboard -->
+            <section id="teacher-dashboard" class="hidden py-8 px-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-2xl font-bold text-gray-800">Educator Dashboard</h2>
+                        <button onclick="backToRoleSelection()" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                            </svg>
+                            Back
+                        </button>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <!-- Teacher Stats -->
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <h3 class="text-gray+500 text-sm font-medium mb-1">Quizzes Created</h3>
+                            <p class="text-3xl font-bold text-indigo-600" id="quiz-count">0</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <h3 class="text-gray-500 text-sm font-medium mb-1">Active Participants</h3>
+                            <p class="text-3xl font-bold text-indigo-600" id="participant-count">0</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow">
+                            <h3 class="text-gray-500 text-sm font-medium mb-1">Average Score</h3>
+                            <p class="text-3xl font-bold text-indigo-600" id="avg-score">0%</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Create New Quiz Section -->
+                    <div class="bg-white p-6 rounded-xl shadow mb-8">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Create New Quiz</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="quiz-title" class="block text-sm font-medium text-gray-700 mb-1">Quiz Title</label>
+                                <input type="text" id="quiz-title" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label for="quiz-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                                <textarea id="quiz-description" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" rows="2"></textarea>
+                            </div>
+                            <div>
+                                <label for="quiz-timer" class="block text-sm font-medium text-gray-700 mb-1">Time Limit (minutes)</label>
+                                <input type="number" id="quiz-timer" min="1" value="10" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <button onclick="createNewQuiz()" class="btn-primary text-white font-medium py-2 px-6 rounded-full mt-2">
+                                Create Quiz
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Questions Section (Hidden initially) -->
+                    <div id="quiz-questions-section" class="hidden bg-white p-6 rounded-xl shadow mb-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-gray-800" id="current-quiz-title">Quiz Questions</h3>
+                            <button onclick="finishQuizCreation()" class="btn-primary text-white font-medium py-2 px-4 rounded-full">
+                                Finish & Generate Code
+                            </button>
+                        </div>
+                        
+                        <div id="questions-container" class="space-y-6 mb-6">
+                            <!-- Questions will be added here dynamically -->
+                        </div>
+                        
+                        <button onclick="addNewQuestion()" class="flex items-center text-indigo-600 font-medium">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                            </svg>
+                            Add Question
+                        </button>
+                    </div>
+                    
+                    <!-- Quiz Code Modal -->
+                    <div id="quiz-code-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50">
+                        <div class="bg-white rounded-xl p-6 max-w-md w-full">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Quiz Created Successfully!</h3>
+                            <p class="text-gray-600 mb-2">Share this code with your students:</p>
+                            <div class="bg-indigo-50 p-4 rounded-lg mb-4">
+                                <p id="quiz-code" class="text-center text-2xl font-bold text-indigo-600 tracking-widest">XXXXXX</p>
+                            </div>
+                            <p class="text-sm text-gray-500 mb-4">Students can join by entering this code on the student dashboard.</p>
+                            <button onclick="closeQuizCodeModal()" class="w-full btn-primary text-white font-medium py-2 px-4 rounded-full">
+                                Done
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Existing Quizzes Section -->
+                    <div class="bg-white p-6 rounded-xl shadow">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Your Quizzes</h3>
+                        <div id="quizzes-list" class="space-y-4">
+                            <!-- Quizzes will be displayed here -->
+                            <p class="text-gray-500">No quizzes created yet. Create your first quiz above.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Student Dashboard -->
+            <section id="student-dashboard" class="hidden py-8 px-4">
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-2xl font-bold text-gray-800">Learner Dashboard</h2>
+                        <button onclick="backToRoleSelection()" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                            </svg>
+                            Back
+                        </button>
+                    </div>
+                    
+                    <!-- Join Quiz Section -->
+                    <div class="bg-white p-6 rounded-xl shadow mb-8">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Join a Quiz</h3>
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div class="flex-grow">
+                                <label for="quiz-code-input" class="block text-sm font-medium text-gray-700 mb-1">Enter Quiz Code</label>
+                                <input type="text" id="quiz-code-input" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="e.g., A1B2C3">
+                            </div>
+                            <div class="flex items-end">
+                                <button onclick="joinQuiz()" class="btn-primary text-white font-medium py-2 px-6 rounded-full h-10 w-full md:w-auto">
+                                    Join Quiz
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Info Section (Hidden initially) -->
+                    <div id="quiz-info-section" class="hidden bg-white p-6 rounded-xl shadow mb-8">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2" id="joined-quiz-title">Quiz Title</h3>
+                        <p class="text-gray-600 mb-4" id="joined-quiz-description">Quiz description goes here</p>
+                        <div class="flex flex-wrap gap-4 mb-4">
+                            <div class="bg-indigo-50 px-3 py-2 rounded-lg">
+                                <span class="text-sm text-gray-600">Time Limit:</span>
+                                <span class="font-medium text-indigo-600 ml-1" id="quiz-time-limit">10 min</span>
+                            </div>
+                            <div class="bg-indigo-50 px-3 py-2 rounded-lg">
+                                <span class="text-sm text-gray-600">Questions:</span>
+                                <span class="font-medium text-indigo-600 ml-1" id="quiz-question-count">5</span>
+                            </div>
+                        </div>
+                        <button onclick="startQuiz()" class="btn-primary text-white font-medium py-2 px-6 rounded-full">
+                            Start Quiz
+                        </button>
+                    </div>
+                    
+                    <!-- Quiz Taking Section (Hidden initially) -->
+                    <div id="quiz-taking-section" class="hidden">
+                        <!-- Timer and Progress Bar -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium text-gray-700">Time remaining</span>
+                                <span class="text-sm font-medium text-gray-700" id="time-remaining">10:00</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="timer-progress" class="bg-indigo-600 h-2.5 rounded-full" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Question Progress -->
+                        <div class="mb-4">
+                            <span class="text-sm font-medium text-gray-700" id="question-progress">Question 1 of 5</span>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-1">
+                                <div id="question-progress-bar" class="bg-indigo-600 h-1.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Question Card -->
+                        <div class="question-card bg-white p-6 rounded-xl shadow mb-8">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4" id="question-text">Question text goes here</h3>
+                            <div id="options-container" class="space-y-3">
+                                <!-- Options will be rendered here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation Buttons -->
+                        <div class="flex justify-between">
+                            <button id="prev-btn" onclick="prevQuestion()" class="hidden text-indigo-600 font-medium py-2 px-4 border border-indigo-600 rounded-full hover:bg-indigo-50">
+                                Previous
+                            </button>
+                            <button id="next-btn" onclick="nextQuestion()" class="ml-auto btn-primary text-white font-medium py-2 px-6 rounded-full">
+                                Next
+                            </button>
+                            <button id="submit-btn" onclick="submitQuiz()" class="hidden ml-auto bg-green-600 text-white font-medium py-2 px-6 rounded-full hover:bg-green-700">
+                                Submit Quiz
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Results Section (Hidden initially) -->
+                    <div id="quiz-results-section" class="hidden bg-white p-6 rounded-xl shadow">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Quiz Results</h3>
+                        <div class="bg-indigo-50 rounded-lg p-6 mb-6">
+                            <div class="flex flex-col items-center">
+                                <div class="relative w-32 h-32 mb-4">
+                                    <svg class="w-full h-full" viewBox="0 0 36 36">
+                                        <path d="M18 2.0845
+                                            a 15.9155 15.9155 0 0 1 0 31.831
+                                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none"
+                                            stroke="#e6e6e6"
+                                            stroke-width="3"
+                                            stroke-dasharray="100, 100" />
+                                        <path id="result-circle" 
+                                            d="M18 2.0845
+                                            a 15.9155 15.9155 0 0 1 0 31.831
+                                            a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            fill="none"
+                                            stroke="#4f46e5"
+                                            stroke-width="3"
+                                            stroke-dasharray="0, 100" />
+                                        <text x="18" y="20.5" text-anchor="middle" font-size="8" fill="#4f46e5" id="result-percentage">0%</text>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-indigo-600 mb-1" id="result-score">0/0</h4>
+                                <p class="text-gray-600" id="result-message">Result message</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">Question Review</h4>
+                            <div id="questions-review" class="space-y-4">
+                                <!-- Questions with correct/incorrect indicators will be shown here -->
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button onclick="retakeQuiz()" class="text-indigo-600 font-medium py-2 px-4 border border-indigo-600 rounded-full hover:bg-indigo-50">
+                                Retake Quiz
+                            </button>
+                            <button onclick="backToStudentDashboard()" class="btn-primary text-white font-medium py-2 px-6 rounded-full">
+                                Back to Dashboard
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- App Footer -->
+        <footer class="bg-white border-t border-gray-200 py-6">
+            <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+                <p>BrainSpark - Transforming assessments into engaging learning experiences</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Application State
+        const state = {
+            role: null,
+            quizzes: JSON.parse(localStorage.getItem('quizzes')) || [],
+            currentQuiz: null,
+            currentQuestionIndex: 0,
+            studentAnswers: {},
+            timer: null,
+            timeLeft: 0,
+            userResults: JSON.parse(localStorage.getItem('results')) || {}
+        };
+
+        // DOM Elements
+        const elements = {
+            roleSelection: document.getElementById('role-selection'),
+            teacherDashboard: document.getElementById('teacher-dashboard'),
+            studentDashboard: document.getElementById('student-dashboard'),
+            quizCodeInput: document.getElementById('quiz-code-input'),
+            quizCount: document.getElementById('quiz-count'),
+            participantCount: document.getElementById('participant-count'),
+            avgScore: document.getElementById('avg-score'),
+            quizzesList: document.getElementById('quizzes-list'),
+            quizInfoSection: document.getElementById('quiz-info-section'),
+            joinedQuizTitle: document.getElementById('joined-quiz-title'),
+            joinedQuizDescription: document.getElementById('joined-quiz-description'),
+            quizTimeLimit: document.getElementById('quiz-time-limit'),
+            quizQuestionCount: document.getElementById('quiz-question-count'),
+            quizTakingSection: document.getElementById('quiz-taking-section'),
+            timeRemaining: document.getElementById('time-remaining'),
+            timerProgress: document.getElementById('timer-progress'),
+            questionProgress: document.getElementById('question-progress'),
+            questionProgressBar: document.getElementById('question-progress-bar'),
+            questionText: document.getElementById('question-text'),
+            optionsContainer: document.getElementById('options-container'),
+            prevBtn: document.getElementById('prev-btn'),
+            nextBtn: document.getElementById('next-btn'),
+            submitBtn: document.getElementById('submit-btn'),
+            quizResultsSection: document.getElementById('quiz-results-section'),
+            resultPercentage: document.getElementById('result-percentage'),
+            resultCircle: document.getElementById('result-circle'),
+            resultScore: document.getElementById('result-score'),
+            resultMessage: document.getElementById('result-message'),
+            questionsReview: document.getElementById('questions-review'),
+            quizQuestionsSection: document.getElementById('quiz-questions-section'),
+            questionsContainer: document.getElementById('questions-container'),
+            currentQuizTitle: document.getElementById('current-quiz-title'),
+            quizCodeModal: document.getElementById('quiz-code-modal'),
+            quizCode: document.getElementById('quiz-code'),
+            quizTitle: document.getElementById('quiz-title'),
+            quizDescription: document.getElementById('quiz-description'),
+            quizTimer: document.getElementById('quiz-timer'),
+            toggleTheme: document.getElementById('toggle-theme')
+        };
+
+        // Initialize the app
+        function init() {
+            updateTeacherStats();
+            renderQuizzesList();
+            setupEventListeners();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            elements.toggleTheme.addEventListener('click', toggleTheme);
+        }
+
+        // Toggle between light/dark theme
+        function toggleTheme() {
+            document.body.classList.toggle('bg-gray-900');
+            document.body.classList.toggle('text-white');
+            
+            if (document.body.classList.contains('bg-gray-900')) {
+                document.body.style.setProperty('--indigo-50', '#1e1e2d');
+                document.body.style.setProperty('--indigo-100', '#2d2d3a');
+            } else {
+                document.body.style.setProperty('--indigo-50', '#e0e7ff');
+                document.body.style.setProperty('--indigo-100', '#c7d2fe');
+            }
+        }
+
+        // Role selection
+        function selectRole(role) {
+            state.role = role;
+            elements.roleSelection.classList.add('hidden');
+            
+            if (role === 'teacher') {
+                elements.teacherDashboard.classList.remove('hidden');
+            } else {
+                elements.studentDashboard.classList.remove('hidden');
+            }
+        }
+
+        // Go back to role selection
+        function backToRoleSelection() {
+            state.role = null;
+            elements.roleSelection.classList.remove('hidden');
+            elements.teacherDashboard.classList.add('hidden');
+            elements.studentDashboard.classList.add('hidden');
+            elements.quizInfoSection.classList.add('hidden');
+            elements.quizTakingSection.classList.add('hidden');
+            elements.quizResultsSection.classList.add('hidden');
+            elements.quizQuestionsSection.classList.add('hidden');
+        }
+
+        // Teacher Functions
+        function updateTeacherStats() {
+            elements.quizCount.textContent = state.quizzes.length;
+            
+            let totalParticipants = 0;
+            let totalScore = 0;
+            let totalMaxScore = 0;
+            
+            state.quizzes.forEach(quiz => {
+                if (quiz.results) {
+                    totalParticipants += Object.keys(quiz.results).length;
+                    Object.values(quiz.results).forEach(result => {
+                        totalScore += result.score;
+                        totalMaxScore += result.questions.length;
+                    });
+                }
+            });
+            
+            elements.participantCount.textContent = totalParticipants;
+            if (totalParticipants > 0) {
+                const avg = Math.round((totalScore / totalMaxScore) * 100);
+                elements.avgScore.textContent = `${avg}%`;
+            } else {
+                elements.avgScore.textContent = '0%';
+            }
+        }
+
+        function createNewQuiz() {
+            const title = elements.quizTitle.value.trim();
+            const description = elements.quizDescription.value.trim();
+            const timeLimit = parseInt(elements.quizTimer.value);
+            
+            if (!title) {
+                alert('Please enter a quiz title');
+                return;
+            }
+            
+            state.currentQuiz = {
+                id: generateId(),
+                title,
+                description,
+                timeLimit,
+                questions: [],
+                code: generateQuizCode(),
+                createdAt: new Date().toISOString(),
+                results: {}
+            };
+            
+            elements.currentQuizTitle.textContent = title;
+            elements.quizTitle.value = '';
+            elements.quizDescription.value = '';
+            elements.quizTimer.value = '10';
+            
+            elements.quizQuestionsSection.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        function addNewQuestion() {
+            const questionCount = state.currentQuiz.questions.length + 1;
+            const questionId = `q-${questionCount}`;
+            
+            const question = {
+                id: questionId,
+                text: '',
+                options: [
+                    { id: `${questionId}-1`, text: '', isCorrect: false },
+                    { id: `${questionId}-2`, text: '', isCorrect: false },
+                    { id: `${questionId}-3`, text: '', isCorrect: false },
+                    { id: `${questionId}-4`, text: '', isCorrect: false }
+                ]
+            };
+            
+            state.currentQuiz.questions.push(question);
+            renderQuestion(question, questionCount);
+        }
+
+        function renderQuestion(question, questionNumber) {
+            const questionElement = document.createElement('div');
+            questionElement.className = 'bg-gray-50 p-4 rounded-lg';
+            questionElement.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <h4 class="font-medium text-gray-800">Question ${questionNumber}</h4>
+                    <button onclick="removeQuestion('${question.id}')" class="text-red-500 hover:text-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Question Text</label>
+                    <input type="text" value="${question.text}" onchange="updateQuestionText('${question.id}', this.value)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+                <div class="space-y-3">
+                    ${question.options.map((option, index) => `
+                        <div class="flex items-center">
+                            <input type="radio" name="${question.id}-correct" ${option.isCorrect ? 'checked' : ''} 
+                                onchange="setCorrectOption('${question.id}', '${option.id}')" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                            <input type="text" value="${option.text}" onchange="updateOptionText('${question.id}', '${option.id}', this.value)" 
+                                class="ml-2 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 flex-grow">
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            elements.questionsContainer.appendChild(questionElement);
+        }
+
+        function updateQuestionText(questionId, text) {
+            const question = state.currentQuiz.questions.find(q => q.id === questionId);
+            if (question) {
+                question.text = text;
+            }
+        }
+
+        function updateOptionText(questionId, optionId, text) {
+            const question = state.currentQuiz.questions.find(q => q.id === questionId);
+            if (question) {
+                const option = question.options.find(o => o.id === optionId);
+                if (option) {
+                    option.text = text;
+                }
+            }
+        }
+
+        function setCorrectOption(questionId, optionId) {
+            const question = state.currentQuiz.questions.find(q => q.id === questionId);
+            if (question) {
+                question.options.forEach(option => {
+                    option.isCorrect = option.id === optionId;
+                });
+            }
+        }
+
+        function removeQuestion(questionId) {
+            state.currentQuiz.questions = state.currentQuiz.questions.filter(q => q.id !== questionId);
+            renderQuestionsList();
+        }
+
+        function renderQuestionsList() {
+            elements.questionsContainer.innerHTML = '';
+            state.currentQuiz.questions.forEach((question, index) => {
+                renderQuestion(question, index + 1);
+            });
+        }
+
+        function finishQuizCreation() {
+            // Validate all questions
+            for (const question of state.currentQuiz.questions) {
+                if (!question.text.trim()) {
+                    alert(`Please enter text for Question ${state.currentQuiz.questions.indexOf(question) + 1}`);
+                    return;
+                }
+                
+                let hasCorrectAnswer = false;
+                let hasEmptyOption = false;
+                
+                for (const option of question.options) {
+                    if (!option.text.trim()) {
+                        hasEmptyOption = true;
+                    }
+                    if (option.isCorrect) {
+                        hasCorrectAnswer = true;
+                    }
+                }
+                
+                if (hasEmptyOption) {
+                    alert(`Please fill all options for Question ${state.currentQuiz.questions.indexOf(question) + 1}`);
+                    return;
+                }
+                
+                if (!hasCorrectAnswer) {
+                    alert(`Please select the correct answer for Question ${state.currentQuiz.questions.indexOf(question) + 1}`);
+                    return;
+                }
+            }
+            
+            if (state.currentQuiz.questions.length === 0) {
+                alert('Please add at least one question');
+                return;
+            }
+            
+            // Save the quiz
+            state.quizzes.push(state.currentQuiz);
+            localStorage.setItem('quizzes', JSON.stringify(state.quizzes));
+            
+            // Show the quiz code
+            elements.quizCode.textContent = state.currentQuiz.code;
+            elements.quizCodeModal.classList.remove('hidden');
+            
+            // Reset
+            state.currentQuiz = null;
+            elements.quizQuestionsSection.classList.add('hidden');
+            updateTeacherStats();
+            renderQuizzesList();
+        }
+
+        function closeQuizCodeModal() {
+            elements.quizCodeModal.classList.add('hidden');
+        }
+
+        function renderQuizzesList() {
+            if (state.quizzes.length === 0) {
+                elements.quizzesList.innerHTML = '<p class="text-gray-500">No quizzes created yet. Create your first quiz above.</p>';
+                return;
+            }
+            
+            elements.quizzesList.innerHTML = state.quizzes.map(quiz => `
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-medium text-gray-800">${quiz.title}</h4>
+                            <p class="text-sm text-gray-600">${quiz.description}</p>
+                            <div class="flex gap-3 mt-2">
+                                <div class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded">
+                                    ${quiz.questions.length} Questions
+                                </div>
+                                <div class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded">
+                                    ${quiz.timeLimit} mins
+                                </div>
+                                <div class="text-xs bg-indigo-50 text-indigo-600 px-2 py-1 rounded">
+                                    ${Object.keys(quiz.results).length} Attempts
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="viewQuizResults('${quiz.id}')" class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                                </svg>
+                            </button>
+                            <button onclick="deleteQuiz('${quiz.id}')" class="p-2 text-red-500 hover:bg-red-50 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewQuizResults(quizId) {
+            const quiz = state.quizzes.find(q => q.id === quizId);
+            if (!quiz) return;
+            
+            const result = Object.entries(quiz.results).map(([studentId, result]) => {
+                return `<div class="bg-white p-4 rounded-lg shadow mb-2">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-medium">Student ${studentId}</p>
+                            <p class="text-sm text-gray-600">${new Date(result.completedAt).toLocaleString()}</p>
+                        </div>
+                        <p class="font-bold ${(result.score / result.questions.length * 100) >= 70 ? 'text-green-600' : 'text-red-600'}">
+                            ${Math.round((result.score / result.questions.length) * 100)}%
+                        </p>
+                    </div>
+                </div>`;
+            }).join('');
+            
+            alert(`Results for ${quiz.title}:\n\n${result || 'No attempts yet'}`);
+        }
+
+        function deleteQuiz(quizId) {
+            if (confirm('Are you sure you want to delete this quiz? This action cannot be undone.')) {
+                state.quizzes = state.quizzes.filter(q => q.id !== quizId);
+                localStorage.setItem('quizzes', JSON.stringify(state.quizzes));
+                updateTeacherStats();
+                renderQuizzesList();
+            }
+        }
+
+        // Student Functions
+        function joinQuiz() {
+            const code = elements.quizCodeInput.value.trim().toUpperCase();
+            if (!code) {
+                alert('Please enter a quiz code');
+                return;
+            }
+            
+            const quiz = state.quizzes.find(q => q.code === code);
+            if (!quiz) {
+                alert('Quiz not found. Please check the code and try again.');
+                return;
+            }
+            
+            state.currentQuiz = quiz;
+            elements.joinedQuizTitle.textContent = quiz.title;
+            elements.joinedQuizDescription.textContent = quiz.description;
+            elements.quizTimeLimit.textContent = quiz.timeLimit + ' mins';
+            elements.quizQuestionCount.textContent = quiz.questions.length;
+            
+            elements.quizInfoSection.classList.remove('hidden');
+        }
+
+        function startQuiz() {
+            state.studentAnswers = {};
+            state.currentQuestionIndex = 0;
+            state.timeLeft = state.currentQuiz.timeLimit * 60; // total seconds
+            
+            elements.quizInfoSection.classList.add('hidden');
+            elements.quizTakingSection.classList.remove('hidden');
+            
+            // Start timer
+            startTimer();
+            
+            // Show first question
+            renderQuestionForStudent();
+        }
+
+        function startTimer() {
+            if (state.timer) clearInterval(state.timer);
+            
+            updateTimerDisplay();
+            state.timer = setInterval(() => {
+                state.timeLeft--;
+                updateTimerDisplay();
+                
+                if (state.timeLeft <= 0) {
+                    clearInterval(state.timer);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(state.timeLeft / 60);
+            const seconds = state.timeLeft % 60;
+            elements.timeRemaining.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            
+            const percentage = (state.timeLeft / (state.currentQuiz.timeLimit * 60)) * 100;
+            elements.timerProgress.style.width = `${percentage}%`;
+            
+            // Change color when time is running low
+            if (percentage < 20) {
+                elements.timerProgress.classList.remove('bg-indigo-600');
+                elements.timerProgress.classList.add('bg-red-500');
+            } else {
+                elements.timerProgress.classList.remove('bg-red-500');
+                elements.timerProgress.classList.add('bg-indigo-600');
+            }
+        }
+
+        function renderQuestionForStudent() {
+            const question = state.currentQuiz.questions[state.currentQuestionIndex];
+            
+            // Update progress
+            elements.questionProgress.textContent = `Question ${state.currentQuestionIndex + 1} of ${state.currentQuiz.questions.length}`;
+            const progressPercentage = (state.currentQuestionIndex / (state.currentQuiz.questions.length - 1)) * 100;
+            elements.questionProgressBar.style.width = `${progressPercentage}%`;
+            
+            // Update question text
+            elements.questionText.textContent = question.text;
+            
+            // Render options
+            elements.optionsContainer.innerHTML = question.options.map(option => `
+                <div class="p-4 border rounded-lg cursor-pointer transition-colors hover:bg-gray-50 ${state.studentAnswers[question.id] === option.id ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'}" 
+                    onclick="selectOption('${question.id}', '${option.id}')">
+                    <div class="flex items-center">
+                        <div class="h-5 w-5 rounded-full border ${state.studentAnswers[question.id] === option.id ? 'border-indigo-500 bg-indigo-500' : 'border-gray-300'}" 
+                            style="margin-right: 12px; border-width: 2px;">
+                            ${state.studentAnswers[question.id] === option.id ? '<div class="h-2 w-2 rounded-full bg-white mx-auto my-1"></div>' : ''}
+                        </div>
+                        <span class="text-gray-800">${option.text}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Navigation buttons
+            if (state.currentQuestionIndex === 0) {
+                elements.prevBtn.classList.add('hidden');
+            } else {
+                elements.prevBtn.classList.remove('hidden');
+            }
+            if (state.currentQuestionIndex === state.currentQuiz.questions.length - 1) {
+                elements.nextBtn.classList.add('hidden');
+                elements.submitBtn.classList.remove('hidden');
+            } else {
+                elements.nextBtn.classList.remove('hidden');
+                elements.submitBtn.classList.add('hidden');
+            }
+        }
+
+        function selectOption(questionId, optionId) {
+            const question = state.currentQuiz.questions.find(q => q.id === questionId);
+            if (question) {
+                state.studentAnswers[questionId] = optionId;
+                
+                // Update UI
+                renderQuestionForStudent();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentQuestionIndex > 0) {
+                state.currentQuestionIndex--;
+                renderQuestionForStudent();
+            }
+        }
+
+        function nextQuestion() {
+            if (state.currentQuestionIndex < state.currentQuiz.questions.length - 1) {
+                state.currentQuestionIndex++;
+                renderQuestionForStudent();
+            }
+        }
+
+        function submitQuiz() {
+            clearInterval(state.timer);
+            
+            // Calculate score
+            let score = 0;
+            const totalQuestions = state.currentQuiz.questions.length;
+            
+            for (const question of state.currentQuiz.questions) {
+                const selectedOption = state.studentAnswers[question.id];
+                if (selectedOption) {
+                    const option = question.options.find(o => o.id === selectedOption);
+                    if (option && option.isCorrect) {
+                        score++;
+                    }
+                }
+            }
+            
+            // Save result
+            const resultId = `${state.currentQuiz.id}-${Date.now()}`;
+            const result = {
+                id: resultId,
+                quizId: state.currentQuiz.id,
+                score,
+                total: totalQuestions,
+                completedAt: new Date().toISOString(),
+                questions: state.currentQuiz.questions.map(q => ({
+                    id: q.id,
+                    selectedOption: state.studentAnswers[q.id],
+                    correctOption: q.options.find(o => o.isCorrect)
+                }))
+            };
+            
+            state.userResults[resultId] = result;
+            localStorage.setItem('results', JSON.stringify(state.userResults));
+            
+            // Show results
+            elements.resultScore.textContent = `${score}/${totalQuestions}`;
+            elements.resultPercentage.textContent = `${Math.round((score / totalQuestions) * 100)}%`;
+            elements.resultMessage.textContent = getResultMessage(score, totalQuestions);
+            
+            const percentage = (score / totalQuestions) * 100;
+            elements.resultCircle.style.strokeDasharray = `${percentage}, 100`;
+            
+            // Review questions
+            renderQuestionsReview();
+            
+            elements.quizTakingSection.classList.add('hidden');
+            elements.quizResultsSection.classList.remove('hidden');
+        }
+
+        function getResultMessage(score, total) {
+            const percentage = (score / total) * 100;
+            if (percentage >= 70) {
+                return 'Great job! You passed the quiz.';
+            } else {
+                return 'You scored below 70%. Please review the material and try again.';
+            }
+        }
+
+        function renderQuestionsReview() {
+            elements.questionsReview.innerHTML = '';
+            
+            for (const question of state.currentQuiz.questions) {
+                const isCorrect = question.options.find(o => o.isCorrect && o.id === state.studentAnswers[question.id]);
+                const reviewElement = document.createElement('div');
+                reviewElement.className = `p-4 rounded-lg shadow mb-4 ${isCorrect ? 'bg-green-50' : 'bg-red-50'}`;
+                reviewElement.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-medium text-gray-800">${question.text}</h4>
+                        ${isCorrect ? '<span class="text-green-600 font-semibold">Correct</span>' : '<span class="text-red-600 font-semibold">Incorrect</span>'}
+                    </div>
+                    <div class="space-y-2">
+                        ${question.options.map(option => `
+                            <div class="flex items-center ${option.isCorrect ? 'font-semibold' : ''}">
+                                <div class="h-4 w-4 rounded-full border ${state.studentAnswers[question.id] === option.id ? 'border-indigo-500 bg-indigo-500' : 'border-gray-300'}" 
+                                    style="margin-right: 10px; border-width: 2px;">
+                                    ${state.studentAnswers[question.id] === option.id ? '<div class="h-2 w-2 rounded-full bg-white mx-auto my-1"></div>' : ''}
+                                </div>
+                                <span class="text-gray-800">${option.text}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                elements.questionsReview.appendChild(reviewElement);
+            }
+        }
+
+        function retakeQuiz() {
+            state.currentQuestionIndex = 0;
+            state.studentAnswers = {};
+            state.timeLeft = state.currentQuiz.timeLimit * 60;
+            
+            elements.quizResultsSection.classList.add('hidden');
+            elements.quizTakingSection.classList.remove('hidden');
+            
+            startTimer();
+            renderQuestionForStudent();
+        }
+
+        function backToStudentDashboard() {
+            state.currentQuiz = null;
+            state.currentQuestionIndex = 0;
+            state.studentAnswers = {};
+            state.timeLeft = 0;
+            
+            elements.quizResultsSection.classList.add('hidden');
+            elements.studentDashboard.classList.remove('hidden');
+        }
+
+        // Utility Functions
+        function generateId() {
+            return 'id-' + Math.random().toString(36).substr(2, 16);
+        }
+
+        function generateQuizCode() {
+            return Math.random().toString(36).substr(2, 6).toUpperCase();
+        }
+
+        // Initialize
+        init();
+    </script>
+</body>
+</html>
